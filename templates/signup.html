@@ -1,0 +1,148 @@
+{% extends 'intro.html' %}
+{% load static %}
+
+{% block  left %}
+    <h1><strong style="margin-right: 30px">测试服务平台</strong><span>用户注册</span></h1>
+    <div class="description">
+        <p style="margin-left: 100px;">访问平台请先注册用户</p>
+        <p>如果已经注册,请点击下方登录按钮 切换到登录页面</p>
+    </div>
+{% endblock %}
+
+{% block right %}
+    <h3>新用户注册 <i style="float:right" class="fa fa-pencil fa-2x"></i></h3>`
+    <div class="description">
+        <p>填写以下资料，完成注册：</p>
+    </div>
+    <div class="divider"></div>
+    <form action="/signup/submit/" id='info' method="post">
+      <div class="form-group" id="userinfo">
+        <input type="text" class="form-control input-lg" name="username" placeholder="用户名">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control input-lg" name="email" placeholder="邮箱地址">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control input-lg" name="password" placeholder="密码">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control input-lg" name="confirm" placeholder="确认密码">
+      </div>
+      <button style="font-size: 22px" id='subinfo' type="submit" class="btn btn-success btn-lg btn-block">立即注册</button>
+    </form>
+
+    <script type="text/javascript">
+{#        $("#submit").click(function () {#}
+{#           $("div.form-group").removeClass("has-error");#}
+{#           $("div.form-group label").remove();#}
+{#           if($("#username").val() == ""){#}
+{#               $("#userinfo").addClass("has-error");#}
+{#               $("#userinfo").prepend("<label class=\"control-label\" for=\"inputError1\">请填写用户名</label>");#}
+{#               return false;#}
+{#           }#}
+{#           if($("#email").val() == ""){#}
+{#               $("#emailinfo").addClass("has-error");#}
+{#               $("#emailinfo").prepend("<label class=\"control-label\" for=\"inputError1\">请填写电子邮箱地址</label>");#}
+{#               return false;#}
+{#           }#}
+{#           if($("#password").val() == ""){#}
+{#               $("#passwordinfo").addClass("has-error");#}
+{#               $("#passwordinfo").prepend("<label class=\"control-label\" for=\"inputError1\">请填写密码</label>");#}
+{#               return false;#}
+{#           }#}
+{#           if($("#confirm").val() == ""){#}
+{#               $("#confirminfo").addClass("has-error");#}
+{#               $("#confirminfo").prepend("<label class=\"control-label\" for=\"inputError1\">请再次输入密码</label>");#}
+{#               return false;#}
+{#           }#}
+{#           $("form").submit();#}
+{#        });#}
+
+{#    bootstrapValidator#}
+    $(function () {
+        $("form").bootstrapValidator({
+            message: '通用的验证失败消息',
+            submitButtons: '#subinfo',
+            feedbackIcons: {//根据验证结果显示的各种图标
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                username: {    //控件的name属性
+                    validators: {
+                        notEmpty: {//检测非空,radio也可用
+                            message: '请输入用户名'
+                        },
+                        stringLength: {//检测长度
+                            min: 5,
+                            max: 30,
+                            message: '长度必须在5-30之间'
+                        },
+                        remote: {
+                            url: '/check_username/',
+                            message: '用户名已存在',
+                            data: function(validator) {
+                                return {
+                                    name: $("input[name='username']").val()
+                                };
+                            }
+                        }
+                    }
+                },
+                email: {    //控件的name属性
+                    validators: {
+                        notEmpty: {//检测非空,radio也可用
+                            message: '请输入正确的电子邮箱地址'
+                        },
+                        emailAddress: {//验证email地址
+                            message: '不是正确的email地址'
+                        }
+                    }
+                },
+                password:{
+                    validators: {
+                        notEmpty: {//检测非空,radio也可用
+                            message: '请输入密码'
+                        },
+                        stringLength: {//检测长度
+                            min: 5,
+                            max: 20,
+                            message: '长度必须在5-20之间'
+                        }
+                    }
+                },
+                confirm:{
+                    validators: {
+                        notEmpty: {//检测非空,radio也可用
+                            message: '请确认密码'
+                        },
+                        stringLength: {//检测长度
+                            min: 5,
+                            max: 20,
+                            message: '长度必须在5-20之间'
+                        },
+                        identical: {//与指定控件内容比较是否相同，比如两次密码不一致
+                            field: 'password',//指定控件name
+                            message: '两次密码输入必须一致'
+                        }
+                    }
+                }
+            }
+        });
+        $("small").css('font-size', "16px");
+        $("#subinfo").click(function () {
+            $("form").bootstrapValidator('validate');
+            if ($("form").data('bootstrapValidator').isValid()) {
+                var password = $("input[name='password']");
+                var confirm = $("input[name='confirm']");
+                var source = password.val();
+                password.val(md5(source));
+                confirm.val(md5(source));
+                info.submit();
+            }
+		});
+    });
+
+    </script>
+{% endblock %}

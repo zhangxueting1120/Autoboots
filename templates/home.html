@@ -1,0 +1,127 @@
+{% extends 'base_ds.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block css %}
+    <style type="text/css">
+    div.item{
+        position:relative;
+    }
+    div.carousel-caption{
+        position: absolute;top: 50%;transform: translateY(-50%);
+    }
+    span.car-span{
+        font-size: 20px;
+    }
+    a.btn{
+        font-size: 18px;
+    }
+    p.fucntion-info{
+        font-size: 16px;
+    }
+    </style>
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+    <div id="carousel" class="carousel slide" style="margin-top: 50px">
+	<!-- 轮播（Carousel）指标 -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel" data-slide-to="1"></li>
+            <li data-target="#carousel" data-slide-to="2"></li>
+        </ol>
+        <!-- 轮播（Carousel）项目 -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="carousel-caption">
+                    <h1>API测试</h1>
+                    <span class="car-span">零编码，通过配置即可进行接口测试</span><br>
+                    <span class="car-span">测试数据统一维护</span>
+                </div>
+                <img src="{% static 'img/glide01.png' %}" alt="First slide">
+            </div>
+            <div class="item">
+                <div class="carousel-caption">
+                    <h1>模板管理</h1>
+                    <span class="car-span">更简单，接口信息统一录入、集中维护</span><br>
+                    <span class="car-span">让关联调用更加容易</span>
+                </div>
+                <img src="{% static 'img/glide01.png' %}" alt="Second slide">
+            </div>
+            <div class="item">
+                <div class="carousel-caption">
+                    <h1>任务驱动</h1>
+                    <span class="car-span">更灵活，按不同维度组织你的测试</span><br>
+                    <span class="car-span">任意选择接口用例</span>
+                </div>
+                <img src="{% static 'img/glide01.png' %}" alt="Third slide">
+            </div>
+        </div>
+        <!-- 轮播（Carousel）导航 -->
+        <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#carousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+     {#常用功能介绍栏位#}
+    <div class="row text-center">
+        <div class="box" style="margin-top: 20px">
+          <h3 style="font-weight:bold;" class="text">常用功能</h3>
+        </div>
+        <div class="col-md-4">
+            <h1 class="fa-ico">
+                <i class="fa fa-puzzle-piece fa-fw"></i>
+            </h1>
+            <h3>接口测试</h3>
+            <a type="button" class="btn btn-success btn-sm" style="font-weight: bold" href="../api/project/">立即使用</a>
+        </div>
+        <div class="col-md-4">
+            <h1 class="fa-ico">
+                <i class="fa fa-cubes fa-fw"></i>
+            </h1>
+            <h3>性能测试</h3>
+            <a type="button" class="btn btn-danger btn-sm" style="font-weight: bold" href="report/">立即使用</a>
+        </div>
+        <div class="col-md-4">
+            <h1 class="fa-ico">
+                <i class="fa fa-dashboard fa-fw"></i>
+            </h1>
+            <h3>代码覆盖率</h3>
+            <a type="button" class="btn btn-warning btn-sm" href="http://10.168.66.170:8080/main/coverage">立即使用</a>
+        </div>
+    </div>
+        {#常用功能介绍栏位#}
+    <div class="row text-center">
+
+        <div class="col-md-4">
+            <h1 class="fa-ico">
+                <i class="fa fa-puzzle-piece fa-fw"></i>
+            </h1>
+            <h3>静态代码走查</h3>
+            <a type="button" class="btn btn-success btn-sm" style="font-weight: bold">立即使用</a>
+        </div>
+        <div class="col-md-4">
+            <h1 class="fa-ico">
+                <i class="fa fa-cubes fa-fw"></i>
+            </h1>
+            <h3>持续集成</h3>
+            <a type="button" class="btn btn-danger btn-sm" style="font-weight: bold" href="/case/new">立即使用</a>
+        </div>
+        <div class="col-md-4">
+            <h1 class="fa-ico">
+                <i class="fa fa-dashboard fa-fw"></i>
+            </h1>
+            <h3>安全测试</h3>
+            <a type="button" class="btn btn-warning btn-sm" style="font-weight: bold" href="/case/new">立即使用</a>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

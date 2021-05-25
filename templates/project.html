@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block css %}
+.main_content{background-color:#f2f2f2;}
+.layui-col-md4 .layui-card-body{height:100px}
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="">首页</a>
+<a href="">项目管理</a>
+<a href=""><cite>项目列表</cite></a>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+    <div class="layui-row layui-col-space10">
+     {% for project in projects %}
+        <div class = "layui-col-md4 layui-col-sm4" style="margin-bottom: 20px;">
+            <div class="layui-card">
+
+                    <div class="layui-card-header">
+                      <span>{{ project.name }}</span>
+
+                      <i pid="{{ project.id }}" class="layui-icon layui-icon-delete" style="font-size: 25px; color: red;float:right;"></i>
+                      <i pid="{{ project.id }}" class="layui-icon layui-icon-edit" style="font-size: 25px; color: green;float:right;"></i>
+                    </div>
+                    <a href="/api/home/?pid={{ project.id }}">
+                    <div class="layui-card-body">
+                    {{ project.desc }}
+                    </div></a>
+            </div>
+        </div>
+
+
+         <div style="display: none ">
+            <div class="layui-row edit-card-{{ project.id }}">
+                <div class="layui-col-md10 layui-col-sm10">
+                    <form class="layui-form" action="">
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">项目名称</label>
+                        <div class="layui-input-block">
+                          <input value="{{ project.name }}" type="text" name="title" required  lay-verify="required" placeholder="最大10个字符" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <input value="{{ project.id }}" type="text" name="pid" style="display: none">
+                      <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">项目描述</label>
+                        <div class="layui-input-block">
+                          <textarea name="desc" placeholder="最大30个字符" class="layui-textarea">{{ project.desc }}</textarea>
+                        </div>
+                      </div>
+
+                      <div class="layui-form-item">
+                        <div class="layui-input-block">
+                          <button type="submit" class="layui-btn" lay-submit lay-filter="edit-submit">立即提交</button>
+                          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+            </div>
+         </div>
+
+    {% endfor %}
+
+     <div class = "layui-col-md4 layui-col-sm4" style="margin-bottom: 20px;">
+        <div class="layui-card">
+          <div class="layui-card-header" style="color:#1E9FFF; font-weight: bold;">新增项目</div>
+          <div class="layui-card-body add—project-card">
+              <i class="layui-icon layui-icon-addition" style="font-size: 60px; color: #1E9FFF;position:absolute;top:30%;left:40%"></i>
+          </div>
+        </div>
+    </div>
+
+
+    <div style="display: none ">
+    <div class="layui-row new-project-card">
+        <div class="layui-col-md10 layui-col-sm10">
+            <form class="layui-form" action="/api/project_add/" method="post">
+              <div class="layui-form-item">
+                <label class="layui-form-label">项目名称</label>
+                <div class="layui-input-block">
+                  <input type="text" name="title" required  lay-verify="required" placeholder="最大10个字符" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">项目描述</label>
+                <div class="layui-input-block">
+                  <textarea name="desc" placeholder="最大30个字符" class="layui-textarea"></textarea>
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+              </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block js %}
+
+
+
+/*编辑弹窗*/
+$(".layui-icon-edit").click(function(){
+    var pid=$(this).attr("pid");
+    layer.open({
+        type: 1,
+        title:"编辑项目",
+        content: $('.edit-card-'+pid).html(), //这里content是一个普通的String
+        area: ['600px', '400px'],
+    });
+});
+
+/*处理编辑请求*/
+layui.use('form', function(){
+  var form = layui.form;
+
+  form.on('submit(edit-submit)', function(data){
+    $.post('/api/project_update/',data.field,function(result){
+        if(result.code==0){
+            layer.msg(result.msg,{time:2000},function(){
+                window.location.reload();
+            })
+        }else if (result.code==1){
+            layer.msg(result.msg);
+        }
+    });
+    return false;
+  });
+});
+
+/*删除项目*/
+$(".layui-icon-delete").click(function(){
+    var pid=$(this).attr("pid");
+    layer.open({
+        type: 0,
+        title: '确认删除',
+        content: '是否确认删除该项目？',
+        btn: ['确认', '取消'],
+        yes: function(index,layero){
+            $.post('/api/project_delete/',{"pid":pid},function (data) {
+                if(data.code===0) {
+                    layer.msg(data.msg, {time: 2000}, function () {
+                        window.location.reload();
+
+                    })
+                }else{
+                    layer.msg(data.msg,{time:2000},function(){
+                        window.location.reload();
+                        })
+                }
+            });
+        }
+
+    });
+});
+
+/*新增项目*/
+$(".add—project-card").click(function(){
+    layer.open({
+        type: 1,
+        title:"新增项目",
+        content: $('.new-project-card').html(),
+        area: ['600px', '400px']
+    });
+});
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'intro.html' %}
+
+{% block  left %}
+    <h1><strong style="margin-right: 30px">测试服务平台</strong><span>用户登录</span></h1>
+    <div class="description">
+        <p style="margin-left: 100px;">访问测试平台请先注册用户</p>
+        <p>如果未注册,请点击下方注册按钮 切换到注册页面</p>
+    </div>
+{% endblock %}
+
+{% block right %}
+    <h3>用户登录<i style="float:right" class="fa fa-user-circle fa-2x"></i></h3>
+    <div class="description">
+        <p>填写以下信息，完成登录：</p>
+    </div>
+    <div class="divider"></div>
+    <form action="/login/submit/" id="info" method="post">
+      <div class="form-group">
+        <input type="text" class="form-control input-lg" name="username" placeholder="用户名">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control input-lg" name="password" placeholder="密码">
+      </div>
+      <button id="login" style="font-size: 22px" type="submit" class="btn btn-success btn-lg btn-block">立即登录</button>
+    </form>
+
+    <script type="text/javascript">
+        $(function () {
+            $("form").bootstrapValidator({
+                submitButtons: '#login',
+                message: '通用的验证失败消息',
+                feedbackIcons: {//根据验证结果显示的各种图标
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    username: {    //控件的name属性
+                        validators: {
+                            notEmpty: {//检测非空,radio也可用
+                                message: '请输入用户名'
+                            },
+                            stringLength: {//检测长度
+                                min: 5,
+                                max: 30,
+                                message: '长度必须在5-30之间'
+                            }
+                        }
+                    },
+                    password:{
+                        validators: {
+                            notEmpty: {//检测非空,radio也可用
+                                message: '请输入密码'
+                            },
+                            stringLength: {//检测长度
+                                min: 5,
+                                max: 20,
+                                message: '长度必须在5-20之间'
+                            }
+                        }
+                    }
+                }
+            });
+            $("small").css('font-size', "16px");
+            $("#login").click(function () {
+            $("form").bootstrapValidator('validate');
+                if ($("form").data('bootstrapValidator').isValid()) {
+                    var password = $("input[name='password']");
+                    var source = password.val();
+                    password.val(md5(source));
+                    info.submit();
+                }
+		    });
+        });
+    </script>
+{% endblock %}

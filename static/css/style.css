@@ -1,0 +1,42 @@
+a, input[type='submit'] {
+    color: blue;
+    text-decoration: none;
+}
+
+.my-form {
+    color: white;
+    background: grey;
+    width: 400px;
+    padding: 5px 10px;
+}
+
+.my-form input, .my-form label{
+    margin-left: 20px;
+    margin-top: 20px;
+    width: 150px;
+}
+
+.nav {
+    background: #009c39;
+    padding: 10px 0 6px 0;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+.nav ul li {
+    float: left;
+    width: 25%;
+    text-align: center;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.nav ul li span {
+    color: #fff;
+    font-size: 14px;
+    font-family: "微软雅黑";
+    line-height: 22px;
+}

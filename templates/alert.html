@@ -1,0 +1,46 @@
+{% extends 'base_ds.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style type="text/css">
+        {% block css %}
+            div.alert{
+                margin-top:200px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 20px;
+            }
+        {% endblock %}
+    </style>
+</head>
+<body>
+{% block content %}
+{#    <div class="container">#}
+{#    {% if message %}#}
+{#        <div class="alert alert-danger" role="alert">{{ message }}</div>#}
+{#    {% endif %}#}
+{#    </div>#}
+    <script type="text/javascript">
+        $(function () {
+{#            var data = {{ data|safe }}#}
+{#            setTimeout(function(){window.location.href = data['url']}, 3000);#}
+
+            var data = {{ data|safe }}
+            if(data['flag'] == 0){
+                x0p(data['message'], '','ok',
+                function() {
+                    window.location.href = data['url'];
+                });
+            }else {
+                x0p(data['message'], '','error',
+                function() {
+                    window.location.href = data['url'];
+                });
+			}
+
+        });
+    </script>
+{% endblock %}
+
+</body>
+</html>
